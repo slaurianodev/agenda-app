@@ -1,6 +1,7 @@
 import React from 'react';
 import Auth from '../modules/Auth';
 import Dashboard from '../components/Dashboard.jsx';
+import ScheduleForm from '../components/ScheduleForm.jsx';
 
 
 class DashboardPage extends React.Component {
@@ -36,11 +37,45 @@ class DashboardPage extends React.Component {
     xhr.send();
   }
 
+  processForm(event){
+    event.preventDefault();
+
+    const xhr = XMLHttpRequest();
+    xhr.open('get','schedules/listAll');
+    xhr.setRequestHeader('Content-type','application/json');
+    xhr.responseType='json';
+    xhr.addEventListener('load', () =>{
+      if (xhr.status === 200) {
+        // success
+
+        // change the component-container state
+        this.setState({
+          errors: {}
+        });
+
+        // change the current URL to /
+        this.context.router.replace('/');
+      }else {
+          // failure
+
+          // change the component state
+          const errors = xhr.response.errors ? xhr.response.errors : {};
+          errors.summary = xhr.response.message;
+
+          this.setState({
+            errors
+          });
+        }
+      });
+    xhr.send();
+  }
+
   /**
    * Render the component.
    */
   render() {
-    return (<Dashboard secretData={this.state.secretData} />);
+    return <Dashboard secretData={this.state.secretData} />;
+     
   }
 
 }

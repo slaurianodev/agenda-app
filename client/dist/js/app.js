@@ -35306,11 +35306,11 @@
 
 	var _DashboardPage2 = _interopRequireDefault(_DashboardPage);
 
-	var _LoginPage = __webpack_require__(460);
+	var _LoginPage = __webpack_require__(470);
 
 	var _LoginPage2 = _interopRequireDefault(_LoginPage);
 
-	var _SignUpPage = __webpack_require__(471);
+	var _SignUpPage = __webpack_require__(472);
 
 	var _SignUpPage2 = _interopRequireDefault(_SignUpPage);
 
@@ -41187,6 +41187,10 @@
 
 	var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
+	var _ScheduleForm = __webpack_require__(460);
+
+	var _ScheduleForm2 = _interopRequireDefault(_ScheduleForm);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41237,6 +41241,42 @@
 	      });
 	      xhr.send();
 	    }
+	  }, {
+	    key: 'processForm',
+	    value: function processForm(event) {
+	      var _this3 = this;
+
+	      event.preventDefault();
+
+	      var xhr = XMLHttpRequest();
+	      xhr.open('get', 'schedules/listAll');
+	      xhr.setRequestHeader('Content-type', 'application/json');
+	      xhr.responseType = 'json';
+	      xhr.addEventListener('load', function () {
+	        if (xhr.status === 200) {
+	          // success
+
+	          // change the component-container state
+	          _this3.setState({
+	            errors: {}
+	          });
+
+	          // change the current URL to /
+	          _this3.context.router.replace('/');
+	        } else {
+	          // failure
+
+	          // change the component state
+	          var errors = xhr.response.errors ? xhr.response.errors : {};
+	          errors.summary = xhr.response.message;
+
+	          _this3.setState({
+	            errors: errors
+	          });
+	        }
+	      });
+	      xhr.send();
+	    }
 
 	    /**
 	     * Render the component.
@@ -41274,10 +41314,18 @@
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
+	var _ScheduleForm = __webpack_require__(460);
+
+	var _ScheduleForm2 = _interopRequireDefault(_ScheduleForm);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Dashboard = function Dashboard(_ref) {
-	  var secretData = _ref.secretData;
+	  var secretData = _ref.secretData,
+	      onSubmit = _ref.onSubmit,
+	      onChange = _ref.onChange,
+	      errors = _ref.errors,
+	      sucessMessage = _ref.sucessMessage;
 	  return _react2.default.createElement(
 	    _Card.Card,
 	    { className: 'container' },
@@ -41291,9 +41339,13 @@
 	      secretData
 	    ),
 	    _react2.default.createElement(
-	      'div',
-	      { className: 'button-line' },
-	      _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Check your Schedules', primary: true })
+	      'form',
+	      { action: '/', onSubmit: onSubmit },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'button-line' },
+	        _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Log in', primary: true })
+	      )
 	    )
 	  );
 	};
@@ -41809,175 +41861,6 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Auth = __webpack_require__(397);
-
-	var _Auth2 = _interopRequireDefault(_Auth);
-
-	var _LoginForm = __webpack_require__(461);
-
-	var _LoginForm2 = _interopRequireDefault(_LoginForm);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LoginPage = function (_React$Component) {
-	  _inherits(LoginPage, _React$Component);
-
-	  /**
-	   * Class constructor.
-	   */
-	  function LoginPage(props, context) {
-	    _classCallCheck(this, LoginPage);
-
-	    var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props, context));
-
-	    var storedMessage = localStorage.getItem('successMessage');
-	    var successMessage = '';
-
-	    if (storedMessage) {
-	      successMessage = storedMessage;
-	      localStorage.removeItem('successMessage');
-	    }
-
-	    // set the initial component state
-	    _this.state = {
-	      errors: {},
-	      successMessage: successMessage,
-	      user: {
-	        email: '',
-	        password: ''
-	      }
-	    };
-
-	    _this.processForm = _this.processForm.bind(_this);
-	    _this.changeUser = _this.changeUser.bind(_this);
-	    return _this;
-	  }
-
-	  /**
-	   * Process the form.
-	   *
-	   * @param {object} event - the JavaScript event object
-	   */
-
-
-	  _createClass(LoginPage, [{
-	    key: 'processForm',
-	    value: function processForm(event) {
-	      var _this2 = this;
-
-	      // prevent default action. in this case, action is the form submission event
-	      event.preventDefault();
-
-	      // create a string for an HTTP body message
-	      var email = encodeURIComponent(this.state.user.email);
-	      console.log(email);
-	      var password = encodeURIComponent(this.state.user.password);
-	      var formData = 'email=' + email + '&password=' + password;
-
-	      // create an AJAX request
-	      var xhr = new XMLHttpRequest();
-	      xhr.open('post', '/auth/login');
-	      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	      xhr.responseType = 'json';
-	      xhr.addEventListener('load', function () {
-	        if (xhr.status === 200) {
-	          // success
-
-	          // change the component-container state
-	          _this2.setState({
-	            errors: {}
-	          });
-
-	          // save the token
-	          _Auth2.default.authenticateUser(xhr.response.token);
-
-	          // change the current URL to /
-	          _this2.context.router.replace('/');
-	        } else {
-	          // failure
-
-	          // change the component state
-	          var errors = xhr.response.errors ? xhr.response.errors : {};
-	          errors.summary = xhr.response.message;
-
-	          _this2.setState({
-	            errors: errors
-	          });
-	        }
-	      });
-	      xhr.send(formData);
-	    }
-
-	    /**
-	     * Change the user object.
-	     *
-	     * @param {object} event - the JavaScript event object
-	     */
-
-	  }, {
-	    key: 'changeUser',
-	    value: function changeUser(event) {
-	      var field = event.target.name;
-	      var user = this.state.user;
-	      user[field] = event.target.value;
-
-	      this.setState({
-	        user: user
-	      });
-	    }
-
-	    /**
-	     * Render the component.
-	     */
-
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(_LoginForm2.default, {
-	        onSubmit: this.processForm,
-	        onChange: this.changeUser,
-	        errors: this.state.errors,
-	        successMessage: this.state.successMessage,
-	        user: this.state.user
-	      });
-	    }
-	  }]);
-
-	  return LoginPage;
-	}(_react2.default.Component);
-
-	LoginPage.contextTypes = {
-	  router: _react.PropTypes.object.isRequired
-	};
-
-	exports.default = LoginPage;
-
-/***/ }),
-/* 461 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -41990,94 +41873,32 @@
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-	var _TextField = __webpack_require__(462);
+	var _TextField = __webpack_require__(461);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var LoginForm = function LoginForm(_ref) {
-	  var onSubmit = _ref.onSubmit,
-	      onChange = _ref.onChange,
-	      errors = _ref.errors,
-	      successMessage = _ref.successMessage,
-	      user = _ref.user;
-	  return _react2.default.createElement(
-	    _Card.Card,
-	    { className: 'container' },
-	    _react2.default.createElement(
-	      'form',
-	      { action: '/', onSubmit: onSubmit },
-	      _react2.default.createElement(
-	        'h2',
-	        { className: 'card-heading' },
-	        'Login'
-	      ),
-	      successMessage && _react2.default.createElement(
-	        'p',
-	        { className: 'success-message' },
-	        successMessage
-	      ),
-	      errors.summary && _react2.default.createElement(
-	        'p',
-	        { className: 'error-message' },
-	        errors.summary
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'field-line' },
-	        _react2.default.createElement(_TextField2.default, {
-	          floatingLabelText: 'Email',
-	          name: 'email',
-	          errorText: errors.email,
-	          onChange: onChange,
-	          value: user.email
-	        })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'field-line' },
-	        _react2.default.createElement(_TextField2.default, {
-	          floatingLabelText: 'Password',
-	          type: 'password',
-	          name: 'password',
-	          onChange: onChange,
-	          errorText: errors.password,
-	          value: user.password
-	        })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'button-line' },
-	        _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Log in', primary: true })
-	      ),
-	      _react2.default.createElement(
-	        _Card.CardText,
-	        null,
-	        'Don\'t have an account? ',
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/signup' },
-	          'Create one'
-	        ),
-	        '.'
-	      )
-	    )
-	  );
+	var ScheduleForm = function ScheduleForm(_ref) {
+		var onSubmit = _ref.onSubmit,
+		    onChange = _ref.onChange,
+		    errors = _ref.errors,
+		    successMessage = _ref.successMessage;
+		return _react2.default.createElement(
+			'form',
+			{ action: '/', onSubmit: onSubmit },
+			_react2.default.createElement(
+				'div',
+				{ className: 'button-line' },
+				_react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Check your Schedules', primary: true })
+			)
+		);
 	};
 
-	LoginForm.propTypes = {
-	  onSubmit: _react.PropTypes.func.isRequired,
-	  onChange: _react.PropTypes.func.isRequired,
-	  errors: _react.PropTypes.object.isRequired,
-	  successMessage: _react.PropTypes.string.isRequired,
-	  user: _react.PropTypes.object.isRequired
-	};
-
-	exports.default = LoginForm;
+	ScheduleForm.prop;
 
 /***/ }),
-/* 462 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42087,7 +41908,7 @@
 	});
 	exports.default = undefined;
 
-	var _TextField = __webpack_require__(463);
+	var _TextField = __webpack_require__(462);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
@@ -42096,7 +41917,7 @@
 	exports.default = _TextField2.default;
 
 /***/ }),
-/* 463 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -42153,19 +41974,19 @@
 
 	var _transitions2 = _interopRequireDefault(_transitions);
 
-	var _EnhancedTextarea = __webpack_require__(464);
+	var _EnhancedTextarea = __webpack_require__(463);
 
 	var _EnhancedTextarea2 = _interopRequireDefault(_EnhancedTextarea);
 
-	var _TextFieldHint = __webpack_require__(468);
+	var _TextFieldHint = __webpack_require__(467);
 
 	var _TextFieldHint2 = _interopRequireDefault(_TextFieldHint);
 
-	var _TextFieldLabel = __webpack_require__(469);
+	var _TextFieldLabel = __webpack_require__(468);
 
 	var _TextFieldLabel2 = _interopRequireDefault(_TextFieldLabel);
 
-	var _TextFieldUnderline = __webpack_require__(470);
+	var _TextFieldUnderline = __webpack_require__(469);
 
 	var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
 
@@ -42677,7 +42498,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 464 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -42722,7 +42543,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactEventListener = __webpack_require__(465);
+	var _reactEventListener = __webpack_require__(464);
 
 	var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
 
@@ -42923,7 +42744,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 465 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -42986,7 +42807,7 @@
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _supports = __webpack_require__(466);
+	var _supports = __webpack_require__(465);
 
 	var supports = _interopRequireWildcard(_supports);
 
@@ -43153,7 +42974,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 466 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43163,7 +42984,7 @@
 	});
 	exports.passiveOption = exports.detachEvent = exports.attachEvent = exports.removeEventListener = exports.addEventListener = exports.canUseDOM = undefined;
 
-	var _defineProperty = __webpack_require__(467);
+	var _defineProperty = __webpack_require__(466);
 
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
@@ -43206,7 +43027,7 @@
 	}();
 
 /***/ }),
-/* 467 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -43230,7 +43051,7 @@
 	}
 
 /***/ }),
-/* 468 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -43312,7 +43133,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 469 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -43431,7 +43252,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 470 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -43569,7 +43390,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 471 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43584,7 +43405,280 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SignUpForm = __webpack_require__(472);
+	var _Auth = __webpack_require__(397);
+
+	var _Auth2 = _interopRequireDefault(_Auth);
+
+	var _LoginForm = __webpack_require__(471);
+
+	var _LoginForm2 = _interopRequireDefault(_LoginForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoginPage = function (_React$Component) {
+	  _inherits(LoginPage, _React$Component);
+
+	  /**
+	   * Class constructor.
+	   */
+	  function LoginPage(props, context) {
+	    _classCallCheck(this, LoginPage);
+
+	    var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props, context));
+
+	    var storedMessage = localStorage.getItem('successMessage');
+	    var successMessage = '';
+
+	    if (storedMessage) {
+	      successMessage = storedMessage;
+	      localStorage.removeItem('successMessage');
+	    }
+
+	    // set the initial component state
+	    _this.state = {
+	      errors: {},
+	      successMessage: successMessage,
+	      user: {
+	        email: '',
+	        password: ''
+	      }
+	    };
+
+	    _this.processForm = _this.processForm.bind(_this);
+	    _this.changeUser = _this.changeUser.bind(_this);
+	    return _this;
+	  }
+
+	  /**
+	   * Process the form.
+	   *
+	   * @param {object} event - the JavaScript event object
+	   */
+
+
+	  _createClass(LoginPage, [{
+	    key: 'processForm',
+	    value: function processForm(event) {
+	      var _this2 = this;
+
+	      // prevent default action. in this case, action is the form submission event
+	      event.preventDefault();
+
+	      // create a string for an HTTP body message
+	      var email = encodeURIComponent(this.state.user.email);
+	      console.log(email);
+	      var password = encodeURIComponent(this.state.user.password);
+	      var formData = 'email=' + email + '&password=' + password;
+
+	      // create an AJAX request
+	      var xhr = new XMLHttpRequest();
+	      xhr.open('post', '/auth/login');
+	      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	      xhr.responseType = 'json';
+	      xhr.addEventListener('load', function () {
+	        if (xhr.status === 200) {
+	          // success
+
+	          // change the component-container state
+	          _this2.setState({
+	            errors: {}
+	          });
+
+	          // save the token
+	          _Auth2.default.authenticateUser(xhr.response.token);
+
+	          // change the current URL to /
+	          _this2.context.router.replace('/');
+	        } else {
+	          // failure
+
+	          // change the component state
+	          var errors = xhr.response.errors ? xhr.response.errors : {};
+	          errors.summary = xhr.response.message;
+
+	          _this2.setState({
+	            errors: errors
+	          });
+	        }
+	      });
+	      xhr.send(formData);
+	    }
+
+	    /**
+	     * Change the user object.
+	     *
+	     * @param {object} event - the JavaScript event object
+	     */
+
+	  }, {
+	    key: 'changeUser',
+	    value: function changeUser(event) {
+	      var field = event.target.name;
+	      var user = this.state.user;
+	      user[field] = event.target.value;
+
+	      this.setState({
+	        user: user
+	      });
+	    }
+
+	    /**
+	     * Render the component.
+	     */
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_LoginForm2.default, {
+	        onSubmit: this.processForm,
+	        onChange: this.changeUser,
+	        errors: this.state.errors,
+	        successMessage: this.state.successMessage,
+	        user: this.state.user
+	      });
+	    }
+	  }]);
+
+	  return LoginPage;
+	}(_react2.default.Component);
+
+	LoginPage.contextTypes = {
+	  router: _react.PropTypes.object.isRequired
+	};
+
+	exports.default = LoginPage;
+
+/***/ }),
+/* 471 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(338);
+
+	var _Card = __webpack_require__(399);
+
+	var _RaisedButton = __webpack_require__(458);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _TextField = __webpack_require__(461);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var LoginForm = function LoginForm(_ref) {
+	  var onSubmit = _ref.onSubmit,
+	      onChange = _ref.onChange,
+	      errors = _ref.errors,
+	      successMessage = _ref.successMessage,
+	      user = _ref.user;
+	  return _react2.default.createElement(
+	    _Card.Card,
+	    { className: 'container' },
+	    _react2.default.createElement(
+	      'form',
+	      { action: '/', onSubmit: onSubmit },
+	      _react2.default.createElement(
+	        'h2',
+	        { className: 'card-heading' },
+	        'Login'
+	      ),
+	      successMessage && _react2.default.createElement(
+	        'p',
+	        { className: 'success-message' },
+	        successMessage
+	      ),
+	      errors.summary && _react2.default.createElement(
+	        'p',
+	        { className: 'error-message' },
+	        errors.summary
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'field-line' },
+	        _react2.default.createElement(_TextField2.default, {
+	          floatingLabelText: 'Email',
+	          name: 'email',
+	          errorText: errors.email,
+	          onChange: onChange,
+	          value: user.email
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'field-line' },
+	        _react2.default.createElement(_TextField2.default, {
+	          floatingLabelText: 'Password',
+	          type: 'password',
+	          name: 'password',
+	          onChange: onChange,
+	          errorText: errors.password,
+	          value: user.password
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'button-line' },
+	        _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Log in', primary: true })
+	      ),
+	      _react2.default.createElement(
+	        _Card.CardText,
+	        null,
+	        'Don\'t have an account? ',
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/signup' },
+	          'Create one'
+	        ),
+	        '.'
+	      )
+	    )
+	  );
+	};
+
+	LoginForm.propTypes = {
+	  onSubmit: _react.PropTypes.func.isRequired,
+	  onChange: _react.PropTypes.func.isRequired,
+	  errors: _react.PropTypes.object.isRequired,
+	  successMessage: _react.PropTypes.string.isRequired,
+	  user: _react.PropTypes.object.isRequired
+	};
+
+	exports.default = LoginForm;
+
+/***/ }),
+/* 472 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _SignUpForm = __webpack_require__(473);
 
 	var _SignUpForm2 = _interopRequireDefault(_SignUpForm);
 
@@ -43720,7 +43814,7 @@
 	exports.default = SignUpPage;
 
 /***/ }),
-/* 472 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43741,7 +43835,7 @@
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-	var _TextField = __webpack_require__(462);
+	var _TextField = __webpack_require__(461);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 

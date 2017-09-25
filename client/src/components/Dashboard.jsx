@@ -1,9 +1,16 @@
 import React, { PropTypes } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import ScheduleForm from '../components/ScheduleForm.jsx';
 
 
-const Dashboard = ({ secretData }) => (
+const Dashboard = ({ 
+secretData ,
+onSubmit,
+onChange,
+errors,
+sucessMessage
+}) => (
   <Card className="container">
     <CardTitle
       title="Dashboard"
@@ -11,9 +18,11 @@ const Dashboard = ({ secretData }) => (
     />
 
     {secretData && <CardText style={{ fontSize: '16px', color: 'green' }}>{secretData}</CardText>}
-    <div className="button-line">
-        <RaisedButton type="submit" label="Check your Schedules" primary />
-    </div>
+  <form action="/" onSubmit={onSubmit}>
+      <div className="button-line">
+          <RaisedButton type="submit" label="Log in" primary />
+      </div>
+  </form>
   </Card>
 );
 

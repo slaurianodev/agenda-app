@@ -15,10 +15,11 @@ const Schedules = new mongoose.Schema({
 	},
 	type: {
 		type:[{
+			type: String,
 			enum:['reunião','evento']
 		}]
 	},
-	loca:{
+	local:{
 		type: String,
 	}
 

@@ -7,7 +7,7 @@ exports.list_all_schedules = function(req, res) {
   Schedule.find({}, function(err, task) {
     if (err)
       res.send(err);
-    res.json(schedule);
+    res.status(200).json(schedule);
   });
 };
 
@@ -16,7 +16,7 @@ exports.create_a_schedule = function(req, res) {
   new_schedule.save(function(err, task) {
     if (err)
       res.send(err);
-    res.json(schedule);
+    res.status(200).json(schedule);
   });
 };
 
