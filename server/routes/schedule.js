@@ -21,5 +21,22 @@ router.post('/create', (req, res) => {
   });
 });
 
+router.put('/update/:scheduleId',(req,res) => {
+Schedule.findOneAndUpdate({_id: req.params.scheduleId}, req.body, {new: true}, function(err, schedule) {
+    if (err)
+      res.send(err);
+    res.json(schedule);
+  });
+});
+
+router.delete('/delete/:scheduleId',(req,res) => {
+Schedule.remove({
+    _id: req.params.scheduleId
+  }, function(err, task) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'Schedule successfully deleted' });
+  });
+});
 
 module.exports = router;

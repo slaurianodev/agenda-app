@@ -13,7 +13,8 @@ class DashboardPage extends React.Component {
     super(props);
 
     this.state = {
-      secretData: ''
+      secretData: '',
+      messageData: ''
     };
   }
 
@@ -29,8 +30,11 @@ class DashboardPage extends React.Component {
     xhr.responseType = 'json';
     xhr.addEventListener('load', () => {
       if (xhr.status === 200) {
+        console.log(xhr.response.message + xhr.response.message2);
         this.setState({
-          secretData: xhr.response.message
+          secretData: xhr.response.message,
+          messageData: xhr.response.message2
+
         });
       }
     });
@@ -47,6 +51,7 @@ class DashboardPage extends React.Component {
     xhr.addEventListener('load', () =>{
       if (xhr.status === 200) {
         // success
+        console.log(this.responseText);
 
         // change the component-container state
         this.setState({

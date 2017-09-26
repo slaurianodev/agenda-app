@@ -18,12 +18,9 @@ sucessMessage
     />
 
     {secretData && <CardText style={{ fontSize: '16px', color: 'green' }}>{secretData}</CardText>}
-  <form action="/" onSubmit={onSubmit}>
-      <div className="button-line">
-          <RaisedButton type="submit" label="Log in" primary />
-      </div>
-  </form>
+    
   </Card>
+
 );
 
 Dashboard.propTypes = {

@@ -6,19 +6,20 @@ const router = new express.Router();
 
 router.get('/dashboard', (req, res) => {
   
-  var sc = Schedule.find({}, function(err, schedules) {
-    if (err)
-      res.send(err);
-    	return res.json(schedules);
-  });
-
-  console.log(sc);
+  var sc = findAllSchedules();
 
   res.status(200).json({
-    message: "You're authorized to see this secret message."
-
+    message: "You're authorized to see this secret message.",
+    message2: sc
   });
 });
 
+function findAllSchedules(){
+	var result = Schedule.find().then(function(result){
+
+	});
+	console.log(result);
+	return result;
+}
 
 module.exports = router;

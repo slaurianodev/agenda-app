@@ -41187,7 +41187,7 @@
 
 	var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-	var _ScheduleForm = __webpack_require__(460);
+	var _ScheduleForm = __webpack_require__(458);
 
 	var _ScheduleForm2 = _interopRequireDefault(_ScheduleForm);
 
@@ -41211,7 +41211,8 @@
 	    var _this = _possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).call(this, props));
 
 	    _this.state = {
-	      secretData: ''
+	      secretData: '',
+	      messageData: ''
 	    };
 	    return _this;
 	  }
@@ -41234,8 +41235,11 @@
 	      xhr.responseType = 'json';
 	      xhr.addEventListener('load', function () {
 	        if (xhr.status === 200) {
+	          console.log(xhr.response.message + xhr.response.message2);
 	          _this2.setState({
-	            secretData: xhr.response.message
+	            secretData: xhr.response.message,
+	            messageData: xhr.response.message2
+
 	          });
 	        }
 	      });
@@ -41255,6 +41259,7 @@
 	      xhr.addEventListener('load', function () {
 	        if (xhr.status === 200) {
 	          // success
+	          console.log(_this3.responseText);
 
 	          // change the component-container state
 	          _this3.setState({
@@ -41310,11 +41315,11 @@
 
 	var _Card = __webpack_require__(399);
 
-	var _RaisedButton = __webpack_require__(458);
+	var _RaisedButton = __webpack_require__(459);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-	var _ScheduleForm = __webpack_require__(460);
+	var _ScheduleForm = __webpack_require__(458);
 
 	var _ScheduleForm2 = _interopRequireDefault(_ScheduleForm);
 
@@ -41337,15 +41342,6 @@
 	      _Card.CardText,
 	      { style: { fontSize: '16px', color: 'green' } },
 	      secretData
-	    ),
-	    _react2.default.createElement(
-	      'form',
-	      { action: '/', onSubmit: onSubmit },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'button-line' },
-	        _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Log in', primary: true })
-	      )
 	    )
 	  );
 	};
@@ -41362,12 +41358,54 @@
 
 	'use strict';
 
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(338);
+
+	var _Card = __webpack_require__(399);
+
+	var _RaisedButton = __webpack_require__(459);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _TextField = __webpack_require__(461);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ScheduleForm = function ScheduleForm(_ref) {
+		var onSubmit = _ref.onSubmit,
+		    onChange = _ref.onChange,
+		    errors = _ref.errors,
+		    successMessage = _ref.successMessage;
+		return _react2.default.createElement(
+			'form',
+			{ action: '/', onSubmit: onSubmit },
+			_react2.default.createElement(
+				'div',
+				{ className: 'button-line' },
+				_react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Check your Schedules', primary: true })
+			)
+		);
+	};
+
+	ScheduleForm.prop;
+
+/***/ }),
+/* 459 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = undefined;
 
-	var _RaisedButton = __webpack_require__(459);
+	var _RaisedButton = __webpack_require__(460);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
@@ -41376,7 +41414,7 @@
 	exports.default = _RaisedButton2.default;
 
 /***/ }),
-/* 459 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -41854,48 +41892,6 @@
 	} : void 0;
 	exports.default = RaisedButton;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 460 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(338);
-
-	var _Card = __webpack_require__(399);
-
-	var _RaisedButton = __webpack_require__(458);
-
-	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
-	var _TextField = __webpack_require__(461);
-
-	var _TextField2 = _interopRequireDefault(_TextField);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ScheduleForm = function ScheduleForm(_ref) {
-		var onSubmit = _ref.onSubmit,
-		    onChange = _ref.onChange,
-		    errors = _ref.errors,
-		    successMessage = _ref.successMessage;
-		return _react2.default.createElement(
-			'form',
-			{ action: '/', onSubmit: onSubmit },
-			_react2.default.createElement(
-				'div',
-				{ className: 'button-line' },
-				_react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Check your Schedules', primary: true })
-			)
-		);
-	};
-
-	ScheduleForm.prop;
 
 /***/ }),
 /* 461 */
@@ -43572,7 +43568,7 @@
 
 	var _Card = __webpack_require__(399);
 
-	var _RaisedButton = __webpack_require__(458);
+	var _RaisedButton = __webpack_require__(459);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
@@ -43831,7 +43827,7 @@
 
 	var _Card = __webpack_require__(399);
 
-	var _RaisedButton = __webpack_require__(458);
+	var _RaisedButton = __webpack_require__(459);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
