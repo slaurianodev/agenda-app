@@ -2,10 +2,10 @@
 =========================================
 
 ### Pre-build and run
-Executar as linhas de comando a seguir para atualizar e/ou instalar os pacotes e módulos necessários para o projeto:
-$ npm i --save express body-parser react react-dom react-router material-ui react-tap-event-plugin validator
-$ npm i --save-dev webpack babel-core babel-loader babel-preset-es2015 babel-preset-react nodemon
-$ npm install --save bcrypt jsonwebtoken mongoose passport passport-local
+Executar as linhas de comando a seguir para atualizar e/ou instalar os pacotes e módulos necessários para o projeto:  
+$ npm i --save express body-parser react react-dom react-router material-ui react-tap-event-plugin validator  
+$ npm i --save-dev webpack babel-core babel-loader babel-preset-es2015 babel-preset-react nodemon  
+$ npm install --save bcrypt jsonwebtoken mongoose passport passport-local  
 
 ### Rodando a aplicação
 Rodar os comandos a seguir em prompts separados para iniciar a aplicação:
