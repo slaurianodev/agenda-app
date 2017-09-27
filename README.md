@@ -9,35 +9,35 @@ $ npm install --save bcrypt jsonwebtoken mongoose passport passport-local
 
 ### Rodando a aplicação
 Rodar os comandos a seguir em prompts separados para iniciar a aplicação:
-$ npm run bundle
+$ npm run bundle  
 $ npm start
 
 A aplicação rodará na porta 3000.
 
 ### APIs disponíveis
-/auth/signup - endpoint para o criar um usuário
-Método: POST
-Content-type: application/json
-Parametros: name, email, password
+/auth/signup - endpoint para o criar um usuário  
+Método: POST  
+Content-type: application/json  
+Parametros: name, email, password  
 
-/auth/login - endpoint para o login de usuário
-Método: POST
-Content-type: application/json
-Parametros: email, password
+/auth/login - endpoint para o login de usuário  
+Método: POST  
+Content-type: application/json  
+Parametros: email, password  
 
-/schedules/create - endpoint para criação de um compromisso
-Método: POST
-Content-type: application/json
-Parametros: user_id,title, description, date, local, type
+/schedules/create - endpoint para criação de um compromisso  
+Método: POST  
+Content-type: application/json  
+Parametros: user_id,title, description, date, local, type  
 
-/schedules/findByUser/:userId - endpoint para consulta de compromisso pelo ID do usuário
-Método: GET
-Parametros: userId
+/schedules/findByUser/:userId - endpoint para consulta de compromisso pelo ID do usuário  
+Método: GET  
+Parametros: userId  
 
-/schedules/update/:scheduleId - endpoint para atualização de um compromisso
-Método: PUT
-Parâmetros: scheduleId (chave), title, description, date, local, type
+/schedules/update/:scheduleId - endpoint para atualização de um compromisso  
+Método: PUT  
+Parâmetros: scheduleId (chave), title, description, date, local, type  
 
-/schedules/delete/:scheduleId - endpoint para exclusão de um compromisso
-Método: DELETE
-Parâmetros: scheduleId (chave)
+/schedules/delete/:scheduleId - endpoint para exclusão de um compromisso  
+Método: DELETE  
+Parâmetros: scheduleId (chave)  
